@@ -87,7 +87,7 @@ public class CommandParser {
         }
 
         Job job = new Job(jobName, cpuTime, priority);
-        jobQueue.enqueue(job);
+
 
         System.out.println("Job submitted successfully:");
         System.out.printf("  Name: %s | CPU_Time: %d | Pri: %d | Arrival_time: %d | Status: %s%n",
@@ -96,6 +96,8 @@ public class CommandParser {
                 job.getPriority(),
                 job.getArrivalTime(),
                 job.getStatus());
+
+        jobQueue.enqueue(job); //moved this line to the bottom to help with testing output; printing was a little disorganized.
     }
 
     private void handleList() {

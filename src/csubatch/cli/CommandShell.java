@@ -6,11 +6,13 @@ import java.util.Scanner;
 
 public class CommandShell {
     private final CommandParser parser;
+    private final JobQueue jobQueue;
     private final Scanner scanner;
     private boolean running;
 
     public CommandShell(JobQueue jobQueue) {
         this.parser = new CommandParser(jobQueue);
+        this.jobQueue = jobQueue;
         this.scanner = new Scanner(System.in);
         this.running = true;
     }
@@ -38,6 +40,7 @@ public class CommandShell {
         }
 
         scanner.close();
+        jobQueue.shutdown();
         System.out.println("Exiting CSUbatch.");
     }
 

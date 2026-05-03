@@ -20,14 +20,18 @@ public class Dispatcher implements Runnable {
                     break;
                 }
 
+                String policyName = jobQueue.getPolicy().name();
+
+                job.setStartTime(System.currentTimeMillis());
                 job.setStatus(JobStatus.RUNNING);
-                System.out.printf("Dispatcher: Running job '%s' (CPU time: %d seconds)%n",
-                        job.getName(), job.getCpuTime());
+                System.out.printf("Dispatching %s using %s%n", job.getName(), policyName);
+                System.out.printf("Running %s...%n", job.getName());
 
                 Thread.sleep(job.getCpuTime() * 1000L);
 
+                job.setCompletionTime(System.currentTimeMillis());
                 job.setStatus(JobStatus.COMPLETED);
-                System.out.printf("Dispatcher: Job '%s' completed.%n", job.getName());
+                System.out.printf("Completed %s%n", job.getName());
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 break;

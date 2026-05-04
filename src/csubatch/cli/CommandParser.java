@@ -259,7 +259,7 @@ public class CommandParser {
     private void handleBenchmark() {
         System.out.println("Loading benchmark workload...");
 
-        String[][] benchmarkJobs = {
+        String[][] benchmarkData = {
                 {"job1", "10", "3"},
                 {"job2", "2", "1"},
                 {"job3", "6", "2"},
@@ -267,18 +267,19 @@ public class CommandParser {
                 {"job5", "8", "4"}
         };
 
-        for (String[] entry : benchmarkJobs) {
-            String name = entry[0];
-            int time = Integer.parseInt(entry[1]);
-            int pri = Integer.parseInt(entry[2]);
+        Job[] batch = new Job[benchmarkData.length];
+        for (int i = 0; i < benchmarkData.length; i++) {
+            String name = benchmarkData[i][0];
+            int time = Integer.parseInt(benchmarkData[i][1]);
+            int pri = Integer.parseInt(benchmarkData[i][2]);
 
-            Job job = new Job(name, time, pri);
-            jobQueue.enqueue(job);
-
+            batch[i] = new Job(name, time, pri);
             System.out.printf("  Added %s runtime=%d priority=%d%n", name, time, pri);
         }
 
-        System.out.println("Benchmark loaded: " + benchmarkJobs.length + " jobs submitted.");
+        jobQueue.enqueueAll(batch);
+
+        System.out.println("Benchmark loaded: " + benchmarkData.length + " jobs submitted.");
         System.out.println("Use 'queue' to see job order under current policy.");
         System.out.println("Use 'stats' after completion to view metrics.");
     }

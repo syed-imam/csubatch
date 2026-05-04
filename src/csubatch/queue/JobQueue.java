@@ -24,6 +24,13 @@ public class JobQueue {
         notifyAll();
     }
 
+    public synchronized void enqueueAll(Job... batch) {
+        for (Job job : batch) {
+            jobs.add(job);
+        }
+        notifyAll();
+    }
+
     public synchronized Job waitForJob() throws InterruptedException {
         while (!shutdownRequested) {
             Job job = selectNextJob();
